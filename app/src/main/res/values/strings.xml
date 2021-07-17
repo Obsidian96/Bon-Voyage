@@ -2,4 +2,6 @@
     <string name="app_name">Bon voyage</string>
     <string name="current">Current</string>
     <string name="previous">Previous</string>
+    <string name="addTrip">Add a trip</string>
+    <string name="iceland">Iceland</string>
 </resources>
