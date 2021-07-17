@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Bon voyage</string>
+    <string name="current">Current</string>
+    <string name="previous">Previous</string>
+</resources>
