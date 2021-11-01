@@ -1,38 +1,43 @@
 package paris.obsidian.bonvoyage.trips
 
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import jp.wasabeef.glide.transformations.BlurTransformation
 import paris.obsidian.bonvoyage.R
 
-class TripAdapter(private val onClick: (Trip) -> Unit) :
-    ListAdapter<Trip, TripAdapter.TripViewHolder>(FlowerDiffCallback) {
+
+class TripAdapter(private val onClick: (Trip) -> Unit, private val onRemoveClick: (Trip) -> Unit) :
+    ListAdapter<Trip, TripAdapter.TripViewHolder>(TripDiffCallback) {
 
     /**
      * Provide a reference to the type of views that you are using
      * (custom ViewHolder).
      */
-    class TripViewHolder(view: View, val onClick: (Trip) -> Unit) :
+    class TripViewHolder(view: View, val onClick: (Trip) -> Unit, val onRemoveClick: (Trip) -> Unit) :
         RecyclerView.ViewHolder(view) {
         private var currentTrip: Trip? = null
 
         val countryName: TextView
         val backgroundImage: ImageView
         val plusImage: ImageView
-        val goToButton: Button
+        val deleteTrip: ImageButton
 
         init {
             // Define click listener for the ViewHolder's View.
             countryName = view.findViewById(R.id.countryName)
             backgroundImage = view.findViewById(R.id.backgroundImage)
             plusImage = view.findViewById(R.id.plusImage)
-            goToButton = view.findViewById(R.id.goToButton)
+            deleteTrip = view.findViewById(R.id.delete_trip)
 
             view.setOnClickListener {
                 currentTrip?.let {
@@ -40,13 +45,36 @@ class TripAdapter(private val onClick: (Trip) -> Unit) :
                 }
             }
 
+            deleteTrip.setOnClickListener {
+                currentTrip?.let {
+                        it1 -> onRemoveClick(it1)
+                }
+            }
         }
 
-        /* Bind flower name and image. */
+        /* Bind Trip name and image. */
         fun bind(trip: Trip) {
+
+            if (trip.id == 0) {
+                plusImage.alpha = 1F
+                countryName.alpha = 0F
+                backgroundImage.alpha = 0F
+                deleteTrip.alpha = 0F
+            }
+            else {
+                plusImage.alpha = 0F
+                countryName.alpha = 1F
+                backgroundImage.alpha = 1F
+                deleteTrip.alpha = 1F
+            }
+
+            Glide.with(itemView.context).load(trip.image)
+                .apply(RequestOptions.bitmapTransform(BlurTransformation(5, 2)))
+                .into(backgroundImage)
+
             currentTrip = trip
             countryName.text = trip.name
-            backgroundImage.setImageResource(trip.image)
+            //backgroundImage.setImageResource(trip.image)
         }
     }
 
@@ -55,24 +83,27 @@ class TripAdapter(private val onClick: (Trip) -> Unit) :
         // Create a new view, which defines the UI of the list item
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.view_country, parent, false)
-        return TripViewHolder(view, onClick)
+
+        val width =  Resources.getSystem().getDisplayMetrics().widthPixels
+        view.layoutParams.width = (width * 0.5).toInt()
+        view.layoutParams.height = view.layoutParams.width;
+        return TripViewHolder(view, onClick, onRemoveClick)
     }
 
     // Gets current Trip and uses it to bind view.
     override fun onBindViewHolder(viewHolder: TripViewHolder, position: Int) {
-
         val trip = getItem(position)
         viewHolder.bind(trip)
     }
 
 }
 
-    object FlowerDiffCallback : DiffUtil.ItemCallback<Trip>() {
-        override fun areItemsTheSame(oldItem: Trip, newItem: Trip): Boolean {
-            return oldItem == newItem
-        }
-
-        override fun areContentsTheSame(oldItem: Trip, newItem: Trip): Boolean {
-            return oldItem.id == newItem.id
-        }
+object TripDiffCallback : DiffUtil.ItemCallback<Trip>() {
+    override fun areItemsTheSame(oldItem: Trip, newItem: Trip): Boolean {
+        return oldItem == newItem
     }
+
+    override fun areContentsTheSame(oldItem: Trip, newItem: Trip): Boolean {
+        return oldItem.id == newItem.id
+    }
+}

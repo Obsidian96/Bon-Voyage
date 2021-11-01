@@ -1,12 +1,28 @@
 package paris.obsidian.bonvoyage.trips
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.res.Resources
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import paris.obsidian.bonvoyage.MainActivity
 
-class TripDataSource (resources: Resources) {
+class TripDataSource (resources: Resources, ctx: Context) {
     private val initialTripList =  Trips().getList(resources)
-    private val tripsLiveData = MutableLiveData(initialTripList)
+    private var tripsLiveData = MutableLiveData(initialTripList)
+    private val gctx = ctx
+
+    @Database(entities = arrayOf(Trip::class), version = 1)
+    abstract class AppDatabase : RoomDatabase() {
+        abstract fun tripDao(): TripDao
+    }
 
     /* Adds Trip to liveData and posts value. */
     fun addTrip(trip: Trip) {
@@ -15,7 +31,8 @@ class TripDataSource (resources: Resources) {
             tripsLiveData.postValue(listOf(trip))
         } else {
             val updatedList = currentList.toMutableList()
-            updatedList.add(0, trip)
+            updatedList.size
+            updatedList.add(trip)
             tripsLiveData.postValue(updatedList)
         }
     }
@@ -38,15 +55,47 @@ class TripDataSource (resources: Resources) {
         return null
     }
 
+     fun getTripCount() : Int {
+         val currentList = tripsLiveData.value
+         return if (currentList != null) {
+             val updatedList = currentList.toMutableList()
+             updatedList.size
+         } else
+             0
+     }
+
     fun getTripList(): LiveData<List<Trip>> {
+
+        if (tripsLiveData.value!!.size <= 1) {
+            CoroutineScope(Dispatchers.Main).launch {
+                withContext(Dispatchers.Default) {
+                    val db = Room.databaseBuilder(
+                        gctx,
+                        AppDatabase::class.java, "bonVoyage"
+                    ).build()
+                    val tripDao : TripDao = db.tripDao()
+                    //val listOfTrips = tripDao.getAll()
+                    /*if (listOfTrips != null && listOfTrips.isNotEmpty()) {
+                        val currentList = tripsLiveData.value
+
+                        val updatedList = currentList?.toMutableList()
+                        updatedList?.size
+                       // updatedList?.addAll(listOfTrips)
+                        tripsLiveData.postValue(updatedList)
+                    }*/
+                }
+            }
+        }
+
         return tripsLiveData
     }
     companion object {
+        @SuppressLint("StaticFieldLeak")
         private var INSTANCE: TripDataSource? = null
 
-        fun getTripDataSource(resources: Resources): TripDataSource {
+        fun getTripDataSource(resources: Resources, ctx: Context): TripDataSource {
             return synchronized(TripDataSource::class) {
-                val newInstance = INSTANCE ?: TripDataSource(resources)
+                val newInstance = INSTANCE ?: TripDataSource(resources, ctx)
                 INSTANCE = newInstance
                 newInstance
             }

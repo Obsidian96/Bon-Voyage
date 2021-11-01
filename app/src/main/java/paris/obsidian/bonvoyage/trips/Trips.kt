@@ -6,18 +6,13 @@ import paris.obsidian.bonvoyage.R
 //Sample for hard coded data
 class Trips {
 
-    /* Returns initial list of flowers. */
+    /* Returns initial list of trips. */
     fun getList(resources: Resources): List<Trip> {
         return listOf(
             Trip(
-                id = 1,
+                id = 0,
                 name = resources.getString(R.string.addTrip),
-                image = R.drawable.ic_launcher_foreground
-            ),
-            Trip(
-                id = 2,
-                name = resources.getString(R.string.iceland),
-                image = R.drawable.ic_launcher_foreground
+                image = R.drawable.ic_add
             )
         )
     }

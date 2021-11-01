@@ -1,11 +1,15 @@
 package paris.obsidian.bonvoyage.trips
 
-import android.graphics.drawable.Drawable
-import android.media.Image
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.util.*
 
-data class Trip(var id: Int = 0,
-                var name: String=  "",
-                var date: Date = Date(),
-                var image: Int = 0
+@Entity
+data class Trip(
+    @PrimaryKey(autoGenerate = true) var id: Int = 0,
+    @ColumnInfo (name = "name") var name: String = "",
+    @ColumnInfo (name = "dateBegin") var dateBegin: String = Date().toString(),
+    @ColumnInfo (name = "dateEnd") var dateEnd: String = Date().toString(),
+    @ColumnInfo (name = "image")  var image: Int = 0
 ) {}

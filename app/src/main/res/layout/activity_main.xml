@@ -6,25 +6,37 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <SearchView
+    <ImageView
+        android:id="@+id/imageViewBackground"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="match_parent"
+        android:src="@drawable/main_background"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/searchView">
-    </SearchView>
+        app:layout_constraintBottom_toTopOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/countryRecycler"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/tab_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/searchView"
         android:layoutDirection="ltr"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
     </androidx.recyclerview.widget.RecyclerView>
+
+    <SearchView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:layout_constraintBottom_toTopOf="@id/tab_layout"
+        app:iconifiedByDefault="false"
+        android:id="@+id/searchView">
+    </SearchView>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
@@ -48,6 +60,7 @@
             android:layout_height="wrap_content"
             android:text="@string/previous" />
     </com.google.android.material.tabs.TabLayout>
+
 
 
 
