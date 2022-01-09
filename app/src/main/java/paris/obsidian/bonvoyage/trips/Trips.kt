@@ -12,6 +12,8 @@ class Trips {
             Trip(
                 id = 0,
                 name = resources.getString(R.string.addTrip),
+                dateBegin = "0",
+                dateEnd = "0",
                 image = R.drawable.ic_add
             )
         )

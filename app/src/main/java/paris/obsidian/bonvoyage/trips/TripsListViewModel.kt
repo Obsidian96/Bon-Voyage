@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import paris.obsidian.bonvoyage.R
 import java.util.*
-import kotlin.random.Random
 
 class TripsListViewModel(val tripDataSource: TripDataSource) : ViewModel() {
 
@@ -24,7 +23,7 @@ class TripsListViewModel(val tripDataSource: TripDataSource) : ViewModel() {
             tripName,
             date,
             date,
-            R.drawable.original
+            R.drawable.iceland
         )
 
         tripDataSource.addTrip(newTrip)

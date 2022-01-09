@@ -26,7 +26,7 @@
             android:layout_height="match_parent"
             android:scaleType="fitStart"
             android:alpha="1"
-            android:src="@drawable/original"/>
+            android:src="@drawable/iceland"/>
 
         <ImageView
             android:id="@+id/plusImage"

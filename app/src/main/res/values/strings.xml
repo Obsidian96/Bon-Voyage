@@ -6,6 +6,11 @@
     <string name="iceland">Iceland</string>
     <string name="validateAdd">Validate</string>
     <string name="addTitle">Add your trip here</string>
+    <string name="backgroundimage">BackgroundImage</string>
+    <string name="end_of_the_trip">End of the trip</string>
+    <string name="beginning_of_the_trip">Beginning of the trip</string>
+    <string name="image_preview">Image preview</string>
+    <string name="button_for_closing_the_page">Button for closing the page</string>
 
     <string-array name="country_array">
         <item>Afghanistan</item>

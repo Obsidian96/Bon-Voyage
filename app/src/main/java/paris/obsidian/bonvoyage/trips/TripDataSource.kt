@@ -19,7 +19,7 @@ class TripDataSource (resources: Resources, ctx: Context) {
     private var tripsLiveData = MutableLiveData(initialTripList)
     private val gctx = ctx
 
-    @Database(entities = arrayOf(Trip::class), version = 1)
+    @Database(entities = [Trip::class], version = 1)
     abstract class AppDatabase : RoomDatabase() {
         abstract fun tripDao(): TripDao
     }
@@ -71,18 +71,18 @@ class TripDataSource (resources: Resources, ctx: Context) {
                 withContext(Dispatchers.Default) {
                     val db = Room.databaseBuilder(
                         gctx,
-                        AppDatabase::class.java, "bonVoyage"
+                        AppDatabase::class.java,
+                        "bonVoyage.db"
                     ).build()
                     val tripDao : TripDao = db.tripDao()
-                    //val listOfTrips = tripDao.getAll()
-                    /*if (listOfTrips != null && listOfTrips.isNotEmpty()) {
+                    val listOfTrips = tripDao.getAll()
+                    if (listOfTrips.isNotEmpty()) {
                         val currentList = tripsLiveData.value
-
                         val updatedList = currentList?.toMutableList()
                         updatedList?.size
-                       // updatedList?.addAll(listOfTrips)
+                        updatedList?.addAll(listOfTrips)
                         tripsLiveData.postValue(updatedList)
-                    }*/
+                    }
                 }
             }
         }

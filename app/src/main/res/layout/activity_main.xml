@@ -15,7 +15,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="parent"/>
+        app:layout_constraintBottom_toTopOf="parent"
+        android:contentDescription="@string/backgroundimage"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/countryRecycler"
@@ -60,8 +61,5 @@
             android:layout_height="wrap_content"
             android:text="@string/previous" />
     </com.google.android.material.tabs.TabLayout>
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

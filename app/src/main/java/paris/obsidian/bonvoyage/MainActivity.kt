@@ -52,30 +52,9 @@ class MainActivity: AppCompatActivity() {
     }
 
     private fun adapterOnClick(trip: Trip) {
-
-
         if (trip.id == 0) {
-            CoroutineScope(Dispatchers.Main).launch {
-                withContext(Dispatchers.Default) {
-                    val db = Room.databaseBuilder(
-                        applicationContext,
-                        AppDatabase::class.java, "bonVoyage"
-                    ).build()
-                    val tripDao : TripDao = db.tripDao()
-                    trip.id = 1
-                    trip.name = "Iceland"
-                    trip.dateBegin = "1"// Date().toString()
-                    trip.dateEnd = "2"//Date().toString()
-                    trip.image = R.drawable.original
-                    tripDao.insertOne(trip)
-                }
-            }
-
-            tripsListViewModel.insertTrip(tripsListViewModel.getTripCount(), "Iceland", Date().toString())
-
-            /*
             val intent = Intent(this, TripAddingActivity()::class.java)
-            startActivity(intent)*/
+            startActivity(intent)
         }
         else {
             val intent = Intent(this, TripDetailActivity()::class.java)
@@ -91,7 +70,7 @@ class MainActivity: AppCompatActivity() {
                 withContext(Dispatchers.Default) {
                     val db = Room.databaseBuilder(
                         applicationContext,
-                        AppDatabase::class.java, "bonVoyage"
+                        AppDatabase::class.java, "bonVoyage.db"
                     ).build()
                     val tripDao : TripDao = db.tripDao()
                     tripDao.removeOne(trip)
