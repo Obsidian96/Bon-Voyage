@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_columnWeight="0.5">
+    android:layout_columnWeight="0.5"
+>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -18,7 +18,8 @@
         android:layout_margin="16dp"
         app:cardElevation="4dp"
         app:cardCornerRadius="@dimen/cardview_default_radius"
-        >
+        android:foreground="?android:attr/selectableItemBackground"
+        android:focusable="true">
 
         <ImageView
             android:id="@+id/backgroundImage"
@@ -43,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Country name here"
+            android:text=""
             android:alpha="1"
             android:textSize="24sp"
             android:shadowColor="@color/black"
@@ -54,13 +55,14 @@
 
         <ImageButton
             android:id="@+id/delete_trip"
-            android:layout_width="32dp"
-            android:layout_height="24dp"
-            android:layout_marginEnd="8dp"
-            android:alpha="1"
-            android:src="@drawable/ic_remove"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_gravity="end"
-            android:background="@android:color/transparent"/>
+            android:layout_marginEnd="0dp"
+            android:alpha="1"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_remove"
+            android:contentDescription="@string/button_for_removing_trip"/>
 
     </androidx.cardview.widget.CardView>
 

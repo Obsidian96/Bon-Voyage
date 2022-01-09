@@ -74,7 +74,6 @@ class TripAdapter(private val onClick: (Trip) -> Unit, private val onRemoveClick
 
             currentTrip = trip
             countryName.text = trip.name
-            //backgroundImage.setImageResource(trip.image)
         }
     }
 

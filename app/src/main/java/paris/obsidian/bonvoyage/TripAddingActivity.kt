@@ -134,7 +134,12 @@ class TripAddingActivity : AppCompatActivity() {
                 trip.name = country
                 trip.dateBegin = dateBegin
                 trip.dateEnd = dateEnd
-                trip.image = R.drawable.mexico
+
+                var resID = resources.getIdentifier(country, "drawable", packageName)
+                if (resID == 0)
+                    resID = R.drawable.iceland
+
+                trip.image = resID
                 tripDao.insertOne(trip)
                 super.onBackPressed()
             }

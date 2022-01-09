@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="parent"
-        android:contentDescription="@string/backgroundimage"/>
+        android:contentDescription="@string/background_image"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/countryRecycler"
@@ -31,13 +31,14 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
     </androidx.recyclerview.widget.RecyclerView>
 
-    <SearchView
+    <androidx.appcompat.widget.SearchView
         android:layout_width="match_parent"
         android:layout_height="60dp"
         app:layout_constraintBottom_toTopOf="@id/tab_layout"
         app:iconifiedByDefault="false"
-        android:id="@+id/searchView">
-    </SearchView>
+        android:id="@+id/searchView"
+        android:background="@color/teal_200_low_opacity">
+    </androidx.appcompat.widget.SearchView>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
@@ -47,13 +48,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_gravity="bottom"
-        app:tabMode="fixed">
+        app:tabMode="fixed"
+        app:tabTextColor="@color/white"
+        android:background="@color/purple_700">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tabItem2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/current" />
+            android:text="@string/current"/>
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tabItem"
