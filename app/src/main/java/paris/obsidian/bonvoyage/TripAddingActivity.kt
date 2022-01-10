@@ -135,7 +135,7 @@ class TripAddingActivity : AppCompatActivity() {
                 trip.dateBegin = dateBegin
                 trip.dateEnd = dateEnd
 
-                var resID = resources.getIdentifier(country, "drawable", packageName)
+                var resID = resources.getIdentifier(country.lowercase(), "drawable", packageName)
                 if (resID == 0)
                     resID = R.drawable.iceland
 
@@ -144,7 +144,6 @@ class TripAddingActivity : AppCompatActivity() {
                 super.onBackPressed()
             }
         }
-
     }
 
     fun selectImageBasedOnCountry(position: Int = 0) {

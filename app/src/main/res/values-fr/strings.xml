@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="current">Futurs</string>
+    <string name="previous">Précédents</string>
+    <string name="addTrip">Ajouter voyage</string>
+    <string name="iceland">Island</string>
+    <string name="validateAdd">Valider</string>
+    <string name="addTitle">Ajouter voyage ici</string>
+    <string name="background_image">Image de fond</string>
+    <string name="end_of_the_trip">Fin du voyage</string>
+    <string name="beginning_of_the_trip">Début du voyage</string>
+    <string name="image_preview">Preview de l\'image</string>
+    <string name="button_for_closing_the_page">Ferme la page</string>
+    <string name="button_for_removing_trip">Supprime un voyage</string>
+    <string name="trip_to">Voyage à: %s</string>
+    <string name="trip_start">Début: %s</string>
+    <string name="trip_end">Fin: %s</string>
+    <string name="button_for_removing_day">Supprime un jour</string>
+</resources>

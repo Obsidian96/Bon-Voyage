@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Bon voyage</string>
+    <string name="app_name" translatable="false">Bon voyage</string>
     <string name="current">Current</string>
     <string name="previous">Previous</string>
     <string name="addTrip">Add a trip</string>
@@ -12,7 +12,11 @@
     <string name="image_preview">Image preview</string>
     <string name="button_for_closing_the_page">Close the page</string>
     <string name="button_for_removing_trip">Remove a trip</string>
-    <string name="date_hint">01/01/1970</string>
+    <string name="button_for_removing_day">Remove a day</string>
+    <string name="date_hint" translatable="false">01/01/1970</string>
+    <string name="trip_to">Trip to: %s</string>
+    <string name="trip_start">Start: %s</string>
+    <string name="trip_end">End: %s</string>
 
     <string-array name="country_array">
         <item>Afghanistan</item>

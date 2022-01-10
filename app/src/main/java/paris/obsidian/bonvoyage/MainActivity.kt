@@ -13,14 +13,17 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import paris.obsidian.bonvoyage.days.Day
+import paris.obsidian.bonvoyage.days.DayDao
 import paris.obsidian.bonvoyage.trips.*
 import java.util.*
 
 class MainActivity: AppCompatActivity() {
 
-    @Database(entities = [Trip::class], version = 1)
+    @Database(entities = [Trip::class, Day::class], version = 1)
     abstract class AppDatabase : RoomDatabase() {
         abstract fun tripDao(): TripDao
+        abstract fun dayDao(): DayDao
     }
 
     private val tripsListViewModel by viewModels<TripsListViewModel> {
