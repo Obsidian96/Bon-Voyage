@@ -23,5 +23,5 @@ interface TripDao {
     fun insertOne(trip: Trip)
 
     @Delete
-    fun removeOne(user: Trip)
+    fun removeOne(trip: Trip)
 }

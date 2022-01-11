@@ -20,5 +20,5 @@ interface DayDao {
     fun insertOne(day: Day)
 
     @Delete
-    fun removeOne(user: Day)
+    fun removeOne(day: Day)
 }
