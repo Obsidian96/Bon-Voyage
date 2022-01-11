@@ -34,7 +34,7 @@ class TripAddingActivity : AppCompatActivity() {
     //In case of double tap - ignore multiple creation of trips
     var softLock = false
 
-    @Database(entities = [Trip::class], version = 1)
+    @Database(entities = [Trip::class], version = 2)
     abstract class AppDatabase : RoomDatabase() {
         abstract fun tripDao(): TripDao
     }
@@ -124,11 +124,7 @@ class TripAddingActivity : AppCompatActivity() {
         softLock = true
         CoroutineScope(Dispatchers.Main).launch {
             withContext(Dispatchers.Default) {
-                val db = Room.databaseBuilder(
-                    applicationContext,
-                    AppDatabase::class.java,
-                    "bonVoyage.db"
-                ).build()
+                val db = DatabaseClient.getInstance(applicationContext)
                 val tripDao : TripDao = db.tripDao()
                 val trip = Trip()
                 trip.name = country

@@ -5,12 +5,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_columnWeight="0.5"
 >
-
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        app:cardBackgroundColor="@color/white"
+        app:cardBackgroundColor="@color/black_low_opacity"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -20,6 +19,13 @@
         app:cardCornerRadius="@dimen/cardview_default_radius"
         android:foreground="?android:attr/selectableItemBackground"
         android:focusable="true">
+
+        <ImageView
+            android:id="@+id/backgroundImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitStart"
+            android:alpha="1"/>
 
         <ImageView
             android:id="@+id/plusImage"
@@ -32,10 +38,10 @@
             />
 
         <TextView
-            android:id="@+id/countryName"
+            android:id="@+id/dayNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="center_horizontal"
             android:text=""
             android:alpha="1"
             android:textSize="24sp"
@@ -43,7 +49,8 @@
             android:shadowDx="1"
             android:shadowDy="2"
             android:shadowRadius="4"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:layout_marginTop="32dp"/>
 
         <ImageButton
             android:id="@+id/delete_day"

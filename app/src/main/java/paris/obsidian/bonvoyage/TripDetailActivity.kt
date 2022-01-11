@@ -1,12 +1,12 @@
 package paris.obsidian.bonvoyage
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Database
 import androidx.room.Room
@@ -24,12 +24,6 @@ import paris.obsidian.bonvoyage.trips.*
 class TripDetailActivity : AppCompatActivity() {
 
     lateinit var trip : Trip
-
-    @Database(entities = [Trip::class, Day::class], version = 1)
-    abstract class AppDatabase : RoomDatabase() {
-        abstract fun tripDao(): TripDao
-        abstract fun dayDao(): DayDao
-    }
 
     private val daysListViewModel by viewModels<DaysListViewModel> {
         DaysListViewModelFactory(this)
@@ -50,14 +44,18 @@ class TripDetailActivity : AppCompatActivity() {
         val dayAdapter = DayAdapter(onClick = {day -> adapterOnClick(day)},
             onRemoveClick = {day -> adapterRemove(day)})
         recyclerView.adapter = dayAdapter
+        recyclerView.layoutManager = GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false)
+
+        /*daysListViewModel.daysLiveData.observe(this, {
+            it?.let {
+                dayAdapter.submitList(it as MutableList<Day>)
+            }
+        })*/
+
 
         CoroutineScope(Dispatchers.Main).launch {
             withContext(Dispatchers.Default) {
-                val db = Room.databaseBuilder(
-                    applicationContext,
-                    TripAddingActivity.AppDatabase::class.java,
-                    "bonVoyage.db"
-                ).build()
+                val db = DatabaseClient.getInstance(applicationContext)
 
                 val tripDao : TripDao = db.tripDao()
                 trip = tripDao.findByID(intent.getIntExtra("id", 0))
@@ -87,12 +85,8 @@ class TripDetailActivity : AppCompatActivity() {
         if (day.id != 0) {
             CoroutineScope(Dispatchers.Main).launch {
                 withContext(Dispatchers.Default) {
-                    val db = Room.databaseBuilder(
-                        applicationContext,
-                        MainActivity.AppDatabase::class.java, "bonVoyage.db"
-                    ).build()
-                    val dayDao : DayDao = db.dayDao()
-                    dayDao.removeOne(day)
+                    val db = DatabaseClient.getInstance(applicationContext)
+                    db.dayDao().removeOne(day)
                 }
             }
             daysListViewModel.removeDay(day)

@@ -11,8 +11,8 @@ class Days {
             Day(
                 id = 0,
                 number = 0,
-                dateBegin = "0",
-                dateEnd = "0",
+                dateBegin = "01/01/1970",
+                dateEnd = "31/12/2012",
                 type = "day"
             )
         )

@@ -12,6 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import paris.obsidian.bonvoyage.DatabaseClient
 import paris.obsidian.bonvoyage.MainActivity
 
 class TripDataSource (resources: Resources, ctx: Context) {
@@ -19,7 +20,7 @@ class TripDataSource (resources: Resources, ctx: Context) {
     private var tripsLiveData = MutableLiveData(initialTripList)
     private val gctx = ctx
 
-    @Database(entities = [Trip::class], version = 1)
+    @Database(entities = [Trip::class], version = 2)
     abstract class AppDatabase : RoomDatabase() {
         abstract fun tripDao(): TripDao
     }
@@ -69,11 +70,8 @@ class TripDataSource (resources: Resources, ctx: Context) {
         if (tripsLiveData.value!!.size <= 1) {
             CoroutineScope(Dispatchers.Main).launch {
                 withContext(Dispatchers.Default) {
-                    val db = Room.databaseBuilder(
-                        gctx,
-                        AppDatabase::class.java,
-                        "bonVoyage.db"
-                    ).build()
+                    val db = DatabaseClient.getInstance(gctx)
+
                     val tripDao : TripDao = db.tripDao()
                     val listOfTrips = tripDao.getAll()
                     if (listOfTrips.isNotEmpty()) {

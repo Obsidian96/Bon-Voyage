@@ -17,22 +17,18 @@ import paris.obsidian.bonvoyage.days.Day
 class DayAdapter(private val onClick: (Day) -> Unit, private val onRemoveClick: (Day) -> Unit) :
     ListAdapter<Day, DayAdapter.DayViewHolder>(DayDiffCallback) {
 
-    /**
-     * Provide a reference to the type of views that you are using
-     * (custom ViewHolder).
-     */
     class DayViewHolder(view: View, val onClick: (Day) -> Unit, val onRemoveClick: (Day) -> Unit) :
         RecyclerView.ViewHolder(view) {
         private var currentDay: Day? = null
 
-        val countryName: TextView
-        val backgroundImage: ImageView
-        val plusImage: ImageView
-        val deleteDay: ImageButton
+        private val dayNumber: TextView
+        private val backgroundImage: ImageView
+        private val plusImage: ImageView
+        private val deleteDay: ImageButton
 
         init {
             // Define click listener for the ViewHolder's View.
-            countryName = view.findViewById(R.id.countryName)
+            dayNumber = view.findViewById(R.id.dayNumber)
             backgroundImage = view.findViewById(R.id.backgroundImage)
             plusImage = view.findViewById(R.id.plusImage)
             deleteDay = view.findViewById(R.id.delete_day)
@@ -52,16 +48,15 @@ class DayAdapter(private val onClick: (Day) -> Unit, private val onRemoveClick: 
 
         /* Bind Day name and image. */
         fun bind(trip: Day) {
-
             if (trip.id == 0) {
                 plusImage.alpha = 1F
-                countryName.alpha = 0F
+                dayNumber.alpha = 0F
                 backgroundImage.alpha = 0F
                 deleteDay.alpha = 0F
             }
             else {
                 plusImage.alpha = 0F
-                countryName.alpha = 1F
+                dayNumber.alpha = 1F
                 backgroundImage.alpha = 1F
                 deleteDay.alpha = 1F
             }
@@ -74,11 +69,11 @@ class DayAdapter(private val onClick: (Day) -> Unit, private val onRemoveClick: 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayViewHolder {
         // Create a new view, which defines the UI of the list item
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.view_country, parent, false)
+            .inflate(R.layout.view_day, parent, false)
 
         val width =  Resources.getSystem().displayMetrics.widthPixels
-        view.layoutParams.width = (width * 0.5).toInt()
-        view.layoutParams.height = view.layoutParams.width
+        view.layoutParams.width = (width * 0.9).toInt()
+        view.layoutParams.height = view.layoutParams.height
         return DayViewHolder(view, onClick, onRemoveClick)
     }
 

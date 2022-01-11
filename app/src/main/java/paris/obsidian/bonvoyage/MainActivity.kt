@@ -20,12 +20,6 @@ import java.util.*
 
 class MainActivity: AppCompatActivity() {
 
-    @Database(entities = [Trip::class, Day::class], version = 1)
-    abstract class AppDatabase : RoomDatabase() {
-        abstract fun tripDao(): TripDao
-        abstract fun dayDao(): DayDao
-    }
-
     private val tripsListViewModel by viewModels<TripsListViewModel> {
         TripsListViewModelFactory(this)
     }
@@ -39,6 +33,7 @@ class MainActivity: AppCompatActivity() {
 
         val recyclerView: RecyclerView = findViewById(R.id.countryRecycler)
         recyclerView.adapter = tripAdapter
+        recyclerView.layoutManager = GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false)
 
         tripsListViewModel.tripsLiveData.observe(this, {
             it?.let {
@@ -51,7 +46,6 @@ class MainActivity: AppCompatActivity() {
             .apply(RequestOptions.bitmapTransform(BlurTransformation(1, 2)))
             .into(backgroundImage)*/
 
-        recyclerView.layoutManager = GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false)
     }
 
     private fun adapterOnClick(trip: Trip) {
@@ -71,10 +65,7 @@ class MainActivity: AppCompatActivity() {
 
             CoroutineScope(Dispatchers.Main).launch {
                 withContext(Dispatchers.Default) {
-                    val db = Room.databaseBuilder(
-                        applicationContext,
-                        AppDatabase::class.java, "bonVoyage.db"
-                    ).build()
+                    val db = DatabaseClient.getInstance(applicationContext)
                     val tripDao : TripDao = db.tripDao()
                     tripDao.removeOne(trip)
                 }

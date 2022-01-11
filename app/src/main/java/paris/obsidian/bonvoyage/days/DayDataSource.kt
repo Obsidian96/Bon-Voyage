@@ -12,13 +12,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import paris.obsidian.bonvoyage.DatabaseClient
 
 class DayDataSource (resources: Resources, ctx: Context) {
     private val initialDayList =  Days().getList(resources)
     private var daysLiveData = MutableLiveData(initialDayList)
     private val gctx = ctx
 
-    @Database(entities = [Day::class], version = 1)
+    @Database(entities = [Day::class], version = 2)
     abstract class AppDatabase : RoomDatabase() {
         abstract fun dayDao(): DayDao
     }
@@ -68,11 +69,9 @@ class DayDataSource (resources: Resources, ctx: Context) {
         if (daysLiveData.value!!.size <= 1) {
             CoroutineScope(Dispatchers.Main).launch {
                 withContext(Dispatchers.Default) {
-                    val db = Room.databaseBuilder(
-                        gctx,
-                        AppDatabase::class.java,
-                        "bonVoyage.db"
-                    ).build()
+
+                    val db = DatabaseClient.getInstance(gctx)
+
                     val dayDao : DayDao = db.dayDao()
                     val listOfDays = dayDao.getAll()
                     if (listOfDays.isNotEmpty()) {
