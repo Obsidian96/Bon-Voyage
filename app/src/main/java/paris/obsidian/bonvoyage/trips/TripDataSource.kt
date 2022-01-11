@@ -5,25 +5,16 @@ import android.content.Context
 import android.content.res.Resources
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import paris.obsidian.bonvoyage.DatabaseClient
-import paris.obsidian.bonvoyage.MainActivity
 
 class TripDataSource (resources: Resources, ctx: Context) {
     private val initialTripList =  Trips().getList(resources)
     private var tripsLiveData = MutableLiveData(initialTripList)
     private val gctx = ctx
-
-    @Database(entities = [Trip::class], version = 2)
-    abstract class AppDatabase : RoomDatabase() {
-        abstract fun tripDao(): TripDao
-    }
 
     /* Adds Trip to liveData and posts value. */
     fun addTrip(trip: Trip) {

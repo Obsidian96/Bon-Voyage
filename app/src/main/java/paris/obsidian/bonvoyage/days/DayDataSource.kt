@@ -5,9 +5,6 @@ import android.content.Context
 import android.content.res.Resources
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,11 +15,6 @@ class DayDataSource (resources: Resources, ctx: Context) {
     private val initialDayList =  Days().getList(resources)
     private var daysLiveData = MutableLiveData(initialDayList)
     private val gctx = ctx
-
-    @Database(entities = [Day::class], version = 2)
-    abstract class AppDatabase : RoomDatabase() {
-        abstract fun dayDao(): DayDao
-    }
 
     /* Adds Day to liveData and posts value. */
     fun addDay(day: Day) {

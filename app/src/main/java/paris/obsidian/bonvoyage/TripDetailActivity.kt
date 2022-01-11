@@ -8,9 +8,6 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import jp.wasabeef.glide.transformations.BlurTransformation
@@ -46,12 +43,11 @@ class TripDetailActivity : AppCompatActivity() {
         recyclerView.adapter = dayAdapter
         recyclerView.layoutManager = GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false)
 
-        /*daysListViewModel.daysLiveData.observe(this, {
+        daysListViewModel.daysLiveData.observe(this, {
             it?.let {
                 dayAdapter.submitList(it as MutableList<Day>)
             }
-        })*/
-
+        })
 
         CoroutineScope(Dispatchers.Main).launch {
             withContext(Dispatchers.Default) {

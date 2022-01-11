@@ -4,12 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
 import android.app.DatePickerDialog
-import android.content.res.Resources
 import android.view.View
 import android.widget.*
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import jp.wasabeef.glide.transformations.BlurTransformation
@@ -33,11 +29,6 @@ class TripAddingActivity : AppCompatActivity() {
 
     //In case of double tap - ignore multiple creation of trips
     var softLock = false
-
-    @Database(entities = [Trip::class], version = 2)
-    abstract class AppDatabase : RoomDatabase() {
-        abstract fun tripDao(): TripDao
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
