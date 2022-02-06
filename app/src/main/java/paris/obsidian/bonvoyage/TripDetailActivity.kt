@@ -1,5 +1,6 @@
 package paris.obsidian.bonvoyage
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
@@ -39,7 +40,7 @@ class TripDetailActivity : AppCompatActivity() {
         val recyclerView: RecyclerView = findViewById(R.id.tripDaysContainer)
 
         val dayAdapter = DayAdapter(onClick = {day -> adapterOnClick(day)},
-            onRemoveClick = {day -> adapterRemove(day)})
+            onRemoveClick = {day -> adapterRemove(day)}, onAddClick = {day -> adapterAdd(day)})
         recyclerView.adapter = dayAdapter
         recyclerView.layoutManager = GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false)
 
@@ -74,7 +75,21 @@ class TripDetailActivity : AppCompatActivity() {
     }
 
     private fun adapterOnClick(day: Day) {
-        //
+        if (day.id == 0) {
+            //Nothing should happen, only clicks on the buttons triggers the action
+        }
+        else {
+            //Edit current day
+        }
+    }
+
+    private fun adapterAdd(day: Day) {
+        CoroutineScope(Dispatchers.Main).launch {
+            withContext(Dispatchers.Default) {
+                val db = DatabaseClient.getInstance(applicationContext)
+                db.dayDao().insertOne(day)
+            }
+        }
     }
 
     private fun adapterRemove(day: Day) {

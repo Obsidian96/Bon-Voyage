@@ -11,5 +11,5 @@ data class Day(
     @ColumnInfo (name = "number") var number: Int = 0,
     @ColumnInfo (name = "dateBegin") var dateBegin: String = Date().toString(),
     @ColumnInfo (name = "dateEnd") var dateEnd: String = Date().toString(),
-    @ColumnInfo (name = "Type")  var type: String = ""
+    @ColumnInfo (name = "Type")  var type: String = "" //Values: Trip(transportation)/Day/...
 ) {}

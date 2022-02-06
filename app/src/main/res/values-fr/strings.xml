@@ -16,4 +16,6 @@
     <string name="trip_start">Début: %s</string>
     <string name="trip_end">Fin: %s</string>
     <string name="button_for_removing_day">Supprime un jour</string>
+    <string name="add_transportation">+ Transport +</string>
+    <string name="add_day_of_trip">+ Journée +</string>
 </resources>
