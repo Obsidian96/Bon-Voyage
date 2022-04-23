@@ -71,18 +71,17 @@ class TripDetailActivity : AppCompatActivity() {
                 onClick = {day -> adapterOnClick(day)},
                 onRemoveClick = {day -> adapterRemove(day)},
                 onAddClick = {
-                        day -> adapterAdd(day)
-                        daysListViewModel.dayDataSource.addDay(day)
-                        /* //recyclerView.adapter?.itemCount
-                        recyclerView.adapter?.notifyDataSetChanged()*/
+                    it.tripID = trip.id
+                    it.dayNumber = daysListViewModel.getDayNumberForNewDay()
+                    adapterAdd(it)
                 })
             recyclerView.adapter = dayAdapter
 
-            daysListViewModel.daysLiveData.observe(owner, {
+            daysListViewModel.daysLiveData.observe(owner) {
                 it?.let {
                     dayAdapter.submitList(it as MutableList<Day>)
                 }
-            })
+            }
         }
 
         closeButton.setOnClickListener {
@@ -103,9 +102,8 @@ class TripDetailActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.Main).launch {
             withContext(Dispatchers.Default) {
                 val db = DatabaseClient.getInstance(applicationContext)
-                day.dayNumber = daysListViewModel.getDayNumberForNewDay()
-                day.tripID = trip.id
-                db.dayDao().insertOne(day)
+                day.id = db.dayDao().insertOne(day).toInt()
+                daysListViewModel.dayDataSource.addDay(day)
             }
         }
     }

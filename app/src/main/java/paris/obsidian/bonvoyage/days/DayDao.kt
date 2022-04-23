@@ -17,7 +17,7 @@ interface DayDao {
     fun insertAll(vararg days: Day)
 
     @Insert
-    fun insertOne(day: Day)
+    fun insertOne(day: Day): Long
 
     @Delete
     fun removeOne(day: Day)
