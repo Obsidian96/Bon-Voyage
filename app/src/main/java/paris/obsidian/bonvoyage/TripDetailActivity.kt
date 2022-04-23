@@ -7,6 +7,8 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -18,13 +20,17 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import paris.obsidian.bonvoyage.days.*
 import paris.obsidian.bonvoyage.trips.*
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class TripDetailActivity : AppCompatActivity() {
 
     lateinit var trip : Trip
 
     private val daysListViewModel by viewModels<DaysListViewModel> {
-        DaysListViewModelFactory(this)
+        DaysListViewModelFactory(this, intent.getIntExtra("id", 0))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,22 +45,15 @@ class TripDetailActivity : AppCompatActivity() {
 
         val recyclerView: RecyclerView = findViewById(R.id.tripDaysContainer)
 
-        val dayAdapter = DayAdapter(onClick = {day -> adapterOnClick(day)},
-            onRemoveClick = {day -> adapterRemove(day)}, onAddClick = {day -> adapterAdd(day)})
-        recyclerView.adapter = dayAdapter
         recyclerView.layoutManager = GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false)
 
-        daysListViewModel.daysLiveData.observe(this, {
-            it?.let {
-                dayAdapter.submitList(it as MutableList<Day>)
-            }
-        })
+        val owner = this
 
         CoroutineScope(Dispatchers.Main).launch {
             withContext(Dispatchers.Default) {
                 val db = DatabaseClient.getInstance(applicationContext)
 
-                val tripDao : TripDao = db.tripDao()
+                val tripDao: TripDao = db.tripDao()
                 trip = tripDao.findByID(intent.getIntExtra("id", 0))
 
                 withContext(Dispatchers.Main) {
@@ -67,6 +66,23 @@ class TripDetailActivity : AppCompatActivity() {
                     endDate.text = getString(R.string.trip_end, trip.dateEnd)
                 }
             }
+            val dayAdapter = DayAdapter(
+                trip,
+                onClick = {day -> adapterOnClick(day)},
+                onRemoveClick = {day -> adapterRemove(day)},
+                onAddClick = {
+                        day -> adapterAdd(day)
+                        daysListViewModel.dayDataSource.addDay(day)
+                        /* //recyclerView.adapter?.itemCount
+                        recyclerView.adapter?.notifyDataSetChanged()*/
+                })
+            recyclerView.adapter = dayAdapter
+
+            daysListViewModel.daysLiveData.observe(owner, {
+                it?.let {
+                    dayAdapter.submitList(it as MutableList<Day>)
+                }
+            })
         }
 
         closeButton.setOnClickListener {
@@ -79,7 +95,7 @@ class TripDetailActivity : AppCompatActivity() {
             //Nothing should happen, only clicks on the buttons triggers the action
         }
         else {
-            //Edit current day
+            //Edit current day ?
         }
     }
 
@@ -87,6 +103,8 @@ class TripDetailActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.Main).launch {
             withContext(Dispatchers.Default) {
                 val db = DatabaseClient.getInstance(applicationContext)
+                day.dayNumber = daysListViewModel.getDayNumberForNewDay()
+                day.tripID = trip.id
                 db.dayDao().insertOne(day)
             }
         }

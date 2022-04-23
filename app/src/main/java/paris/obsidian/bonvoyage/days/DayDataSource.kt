@@ -10,11 +10,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import paris.obsidian.bonvoyage.DatabaseClient
+import paris.obsidian.bonvoyage.trips.Trip
 
-class DayDataSource (resources: Resources, ctx: Context) {
+class DayDataSource (resources: Resources, ctx: Context, id: Int) {
     private val initialDayList =  Days().getList(resources)
     private var daysLiveData = MutableLiveData(initialDayList)
     private val gctx = ctx
+    private val currentTrip = id
 
     /* Adds Day to liveData and posts value. */
     fun addDay(day: Day) {
@@ -65,7 +67,7 @@ class DayDataSource (resources: Resources, ctx: Context) {
                     val db = DatabaseClient.getInstance(gctx)
 
                     val dayDao : DayDao = db.dayDao()
-                    val listOfDays = dayDao.getAll()
+                    val listOfDays = dayDao.getAll(currentTrip)
                     if (listOfDays.isNotEmpty()) {
                         val currentList = daysLiveData.value
                         val updatedList = currentList?.toMutableList()
@@ -83,9 +85,9 @@ class DayDataSource (resources: Resources, ctx: Context) {
         @SuppressLint("StaticFieldLeak")
         private var INSTANCE: DayDataSource? = null
 
-        fun getDayDataSource(resources: Resources, ctx: Context): DayDataSource {
+        fun getDayDataSource(resources: Resources, ctx: Context, id: Int): DayDataSource {
             return synchronized(DayDataSource::class) {
-                val newInstance = INSTANCE ?: DayDataSource(resources, ctx)
+                val newInstance = INSTANCE ?: DayDataSource(resources, ctx, id)
                 INSTANCE = newInstance
                 newInstance
             }

@@ -18,4 +18,8 @@
     <string name="button_for_removing_day">Supprime un jour</string>
     <string name="add_transportation">+ Transport +</string>
     <string name="add_day_of_trip">+ Journée +</string>
+    <string name="day_number">Jour %d: (%s)</string>
+    <string name="day_number_short">Jour %d:</string>
+    <string name="hotel_loc">Lieu de l\'hotel</string>
+    <string name="add_day_description">Détail de la journée</string>
 </resources>

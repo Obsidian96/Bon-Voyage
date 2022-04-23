@@ -10,10 +10,11 @@ class Days {
         return listOf(
             Day(
                 id = 0,
-                number = 0,
-                dateBegin = "01/01/1970",
-                dateEnd = "31/12/2012",
-                type = "day"
+                type = "day",
+                content = "",
+                hotel = "",
+                dayNumber = 0,
+                tripID = 0
             )
         )
     }

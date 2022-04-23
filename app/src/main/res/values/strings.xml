@@ -17,8 +17,13 @@
     <string name="trip_to">Trip to: %s</string>
     <string name="trip_start">Start: %s</string>
     <string name="trip_end">End: %s</string>
+    <string name="day_number">Day %d: (%s)</string>
+    <string name="day_number_short">Day %d:</string>
     <string name="add_day_of_trip">Add a day</string>
+    <string name="add_day_description">Day\'s description</string>
+
     <string name="add_transportation">Add transportation</string>
+    <string name="hotel_loc">Hotel location</string>
 
     <string-array name="country_array">
         <item>Afghanistan</item>

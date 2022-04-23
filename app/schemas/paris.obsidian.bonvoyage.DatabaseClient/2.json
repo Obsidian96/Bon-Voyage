@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "06e5cf2f4972e185d95b4b43768446a1",
+    "identityHash": "7c89260b6929f4b2de29664e3155c2d7",
     "entities": [
       {
         "tableName": "Trip",
@@ -50,7 +50,7 @@
       },
       {
         "tableName": "Day",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `number` INTEGER NOT NULL, `dateBegin` TEXT NOT NULL, `dateEnd` TEXT NOT NULL, `Type` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `type` TEXT NOT NULL, `content` TEXT NOT NULL, `hotel` TEXT NOT NULL, `dayNumber` INTEGER NOT NULL, `tripID` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -59,27 +59,33 @@
             "notNull": true
           },
           {
-            "fieldPath": "number",
-            "columnName": "number",
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "content",
+            "columnName": "content",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hotel",
+            "columnName": "hotel",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dayNumber",
+            "columnName": "dayNumber",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "dateBegin",
-            "columnName": "dateBegin",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "dateEnd",
-            "columnName": "dateEnd",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "type",
-            "columnName": "Type",
-            "affinity": "TEXT",
+            "fieldPath": "tripID",
+            "columnName": "tripID",
+            "affinity": "INTEGER",
             "notNull": true
           }
         ],
@@ -96,7 +102,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '06e5cf2f4972e185d95b4b43768446a1')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7c89260b6929f4b2de29664e3155c2d7')"
     ]
   }
 }

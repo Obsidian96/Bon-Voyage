@@ -7,8 +7,8 @@ import androidx.room.Query
 
 @Dao
 interface DayDao {
-    @Query("SELECT * FROM day")
-    fun getAll(): List<Day>
+    @Query("SELECT * FROM day WHERE tripID LIKE:tripID")
+    fun getAll(tripID: Int): List<Day>
 
     @Query("SELECT * FROM day WHERE id LIKE :id LIMIT 1")
     fun findByID(id: Int): Day
