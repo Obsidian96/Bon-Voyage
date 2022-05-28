@@ -28,6 +28,8 @@ import java.util.*
 class TripDetailActivity : AppCompatActivity() {
 
     lateinit var trip : Trip
+    lateinit var recyclerView: RecyclerView
+    var initialized = 0;
 
     private val daysListViewModel by viewModels<DaysListViewModel> {
         DaysListViewModelFactory(this, intent.getIntExtra("id", 0))
@@ -43,7 +45,7 @@ class TripDetailActivity : AppCompatActivity() {
         val closeButton: ImageButton = findViewById(R.id.closeButton)
         val imageViewBackground: ImageView = findViewById(R.id.imageViewBackground)
 
-        val recyclerView: RecyclerView = findViewById(R.id.tripDaysContainer)
+        recyclerView = findViewById(R.id.tripDaysContainer)
 
         recyclerView.layoutManager = GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false)
 
@@ -82,6 +84,12 @@ class TripDetailActivity : AppCompatActivity() {
             daysListViewModel.daysLiveData.observe(owner) {
                 it?.let {
                     dayAdapter.submitList(it as MutableList<Day>)
+                    recyclerView.post {
+                        if (daysListViewModel.getDayCount() == 0 && initialized >= 1 || initialized >= 2) //Stupid workaround First number is for add a day, second one is for the rest
+                            recyclerView.scrollToPosition(daysListViewModel.getDayCount() - 1)
+                        else
+                            initialized += 1
+                    }
                 }
             }
         }

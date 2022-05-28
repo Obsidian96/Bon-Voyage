@@ -18,7 +18,6 @@ import paris.obsidian.bonvoyage.trips.TripDao
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 class TripAddingActivity : AppCompatActivity() {
 
     private lateinit  var editBeginDate: TextView
@@ -134,10 +133,9 @@ class TripAddingActivity : AppCompatActivity() {
     }
 
     fun selectImageBasedOnCountry(position: Int = 0) {
-
         var country = resources.getStringArray(R.array.country_array)[position].lowercase()
         country = country.replace("'", "_").replace(" ", "_")
-        
+
         var resID = resources.getIdentifier(country, "drawable", packageName)
 
         if (resID == 0)
