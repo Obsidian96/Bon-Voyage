@@ -135,7 +135,9 @@ class TripAddingActivity : AppCompatActivity() {
 
     fun selectImageBasedOnCountry(position: Int = 0) {
 
-        val country = resources.getStringArray(R.array.country_array)[position].lowercase()
+        var country = resources.getStringArray(R.array.country_array)[position].lowercase()
+        country = country.replace("'", "_").replace(" ", "_")
+        
         var resID = resources.getIdentifier(country, "drawable", packageName)
 
         if (resID == 0)

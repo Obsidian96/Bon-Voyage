@@ -19,8 +19,10 @@
     <string name="trip_end">End: %s</string>
     <string name="day_number">Day %d: (%s)</string>
     <string name="day_number_short">Day %d:</string>
+    <string name="day_travel">Transport</string>
     <string name="add_day_of_trip">Add a day</string>
     <string name="add_day_description">Day\'s description</string>
+    <string name="add_transport_description">Transportation\'s description</string>
 
     <string name="add_transportation">Add transportation</string>
     <string name="hotel_loc">Hotel location</string>
@@ -38,7 +40,7 @@
         <item>Australia</item>
         <item>Austria</item>
         <item>Azerbaijan</item>
-        <item>The Bahamas</item>
+        <item>Bahamas</item>
         <item>Bahrain</item>
         <item>Bangladesh</item>
         <item>Barbados</item>
@@ -68,7 +70,7 @@
         <item>DR Congo</item>
         <item>Congo Brazzaville</item>
         <item>Costa Rica</item>
-        <item>Côte d’Ivoire</item>
+        <item>Cote d’Ivoire</item>
         <item>Croatia</item>
         <item>Cuba</item>
         <item>Cyprus</item>

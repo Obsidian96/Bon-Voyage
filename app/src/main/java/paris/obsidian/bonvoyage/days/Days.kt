@@ -10,7 +10,7 @@ class Days {
         return listOf(
             Day(
                 id = 0,
-                type = "day",
+                type = "default",
                 content = "",
                 hotel = "",
                 dayNumber = 0,
