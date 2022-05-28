@@ -35,16 +35,16 @@ class MainActivity: AppCompatActivity() {
         recyclerView.adapter = tripAdapter
         recyclerView.layoutManager = GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false)
 
-        tripsListViewModel.tripsLiveData.observe(this, {
+        tripsListViewModel.tripsLiveData.observe(this) {
             it?.let {
                 tripAdapter.submitList(it as MutableList<Trip>)
             }
-        })
+        }
 
-       /* val backgroundImage: ImageView = findViewById(R.id.imageViewBackground)
-        Glide.with(this).load(R.drawable.airplane)
-            .apply(RequestOptions.bitmapTransform(BlurTransformation(1, 2)))
-            .into(backgroundImage)*/
+        /* val backgroundImage: ImageView = findViewById(R.id.imageViewBackground)
+         Glide.with(this).load(R.drawable.airplane)
+             .apply(RequestOptions.bitmapTransform(BlurTransformation(1, 2)))
+             .into(backgroundImage)*/
 
     }
 
