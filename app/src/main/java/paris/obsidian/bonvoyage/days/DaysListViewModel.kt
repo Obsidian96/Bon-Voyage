@@ -58,7 +58,7 @@ class DaysListViewModel(val dayDataSource: DayDataSource) : ViewModel() {
             if (normalDayNumber != it.dayNumber)
                 return normalDayNumber + 1
             //if (it.type == "day")
-                ++normalDayNumber
+            ++normalDayNumber
         }
         return normalDayNumber
     }

@@ -18,4 +18,8 @@ class Days {
             )
         )
     }
+
+    fun getEmptyList(resources: Resources): List<Day> {
+        return listOf()
+    }
 }

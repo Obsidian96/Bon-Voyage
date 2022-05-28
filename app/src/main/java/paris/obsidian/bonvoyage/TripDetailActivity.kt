@@ -100,12 +100,6 @@ class TripDetailActivity : AppCompatActivity() {
     }
 
     private fun adapterOnClick(day: Day) {
-        if (day.id == 0) {
-            //Nothing should happen, only clicks on the buttons triggers the action
-        }
-        else {
-            //Edit current day ?
-        }
     }
 
     private fun adapterAdd(day: Day) {

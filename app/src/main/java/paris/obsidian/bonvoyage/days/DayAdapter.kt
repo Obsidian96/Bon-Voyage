@@ -108,7 +108,7 @@ class DayAdapter(
         fun bind(day: Day) {
             val ctx = backgroundImage.context
 
-            if (day.id == 0) {
+            if (day.id == 0 || day.type == "default") {
                 plusButtonContainer.visibility = View.VISIBLE
                 contentContainer.visibility = View.GONE
                 dayNumber.alpha = 0F

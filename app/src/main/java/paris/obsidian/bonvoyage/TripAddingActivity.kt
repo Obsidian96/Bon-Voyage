@@ -13,6 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import paris.obsidian.bonvoyage.days.Days
 import paris.obsidian.bonvoyage.trips.Trip
 import paris.obsidian.bonvoyage.trips.TripDao
 import java.text.SimpleDateFormat
@@ -126,7 +127,13 @@ class TripAddingActivity : AppCompatActivity() {
                     resID = R.drawable.iceland
 
                 trip.image = resID
-                tripDao.insertOne(trip)
+                trip.id = tripDao.insertOne(trip).toInt()
+
+                val day = Days().getList(resources)[0]
+                day.tripID = trip.id
+                day.type = "default"
+                db.dayDao().insertOne(day).toInt()
+
                 super.onBackPressed()
             }
         }

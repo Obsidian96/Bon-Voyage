@@ -13,21 +13,20 @@ import paris.obsidian.bonvoyage.DatabaseClient
 import paris.obsidian.bonvoyage.trips.Trip
 
 class DayDataSource (resources: Resources, ctx: Context, id: Int) {
-    private val initialDayList =  Days().getList(resources)
-    private var daysLiveData = MutableLiveData(initialDayList)
+
+    private var daysLiveData : MutableLiveData<List<Day>> = MutableLiveData()
     private val gctx = ctx
     private val currentTrip = id
 
     /* Adds Day to liveData and posts value. */
     fun addDay(day: Day) {
-        val currentList = daysLiveData.value
+        val currentList = daysLiveData.value?.toMutableList()
         if (currentList == null) {
             daysLiveData.postValue(listOf(day))
         } else {
-            val updatedList = currentList.toMutableList()
-            updatedList.size
-            updatedList.add(day)
-            daysLiveData.postValue(updatedList)
+            currentList.add(day)
+            currentList.size
+            daysLiveData.postValue(currentList)
         }
     }
 
@@ -52,8 +51,7 @@ class DayDataSource (resources: Resources, ctx: Context, id: Int) {
      fun getDayCount() : Int {
          val currentList = daysLiveData.value
          return if (currentList != null) {
-             val updatedList = currentList.toMutableList()
-             updatedList.size
+             return currentList.size
          } else
              0
      }
@@ -63,7 +61,6 @@ class DayDataSource (resources: Resources, ctx: Context, id: Int) {
         if (daysLiveData.value!!.size <= 1) {
             CoroutineScope(Dispatchers.Main).launch {
                 withContext(Dispatchers.Default) {
-
                     val db = DatabaseClient.getInstance(gctx)
 
                     val dayDao : DayDao = db.dayDao()

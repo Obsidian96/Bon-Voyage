@@ -20,7 +20,7 @@ interface TripDao {
     fun insertAll(vararg trips: Trip)
 
     @Insert
-    fun insertOne(trip: Trip)
+    fun insertOne(trip: Trip) : Long
 
     @Delete
     fun removeOne(trip: Trip)
