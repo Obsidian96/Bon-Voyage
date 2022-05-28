@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import paris.obsidian.bonvoyage.DatabaseClient
+import paris.obsidian.bonvoyage.days.Day
 
 class TripDataSource (resources: Resources, ctx: Context) {
     private val initialTripList =  Trips().getList(resources)
@@ -56,9 +57,9 @@ class TripDataSource (resources: Resources, ctx: Context) {
              0
      }
 
-    fun getTripList(): LiveData<List<Trip>> {
+    fun getTripList(refresh : Boolean): LiveData<List<Trip>> {
 
-        if (tripsLiveData.value!!.size <= 1) {
+        if (tripsLiveData.value!!.size <= 1 || refresh) {
             CoroutineScope(Dispatchers.Main).launch {
                 withContext(Dispatchers.Default) {
                     val db = DatabaseClient.getInstance(gctx)
@@ -66,11 +67,11 @@ class TripDataSource (resources: Resources, ctx: Context) {
                     val tripDao : TripDao = db.tripDao()
                     val listOfTrips = tripDao.getAll()
                     if (listOfTrips.isNotEmpty()) {
-                        val currentList = tripsLiveData.value
-                        val updatedList = currentList?.toMutableList()
-                        updatedList?.size
-                        updatedList?.addAll(listOfTrips)
-                        tripsLiveData.postValue(updatedList)
+                        val list : MutableList<Trip> = mutableListOf()
+                        tripsLiveData.postValue(list)
+                        list.add(initialTripList[0])
+                        list.addAll(listOfTrips)
+                        tripsLiveData.postValue(list)
                     }
                 }
             }

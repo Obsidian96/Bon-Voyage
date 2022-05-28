@@ -13,7 +13,7 @@ interface DayDao {
     @Insert
     fun insertAll(vararg days: Day)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOne(day: Day): Long
 
     @Update

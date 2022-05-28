@@ -11,22 +11,24 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import paris.obsidian.bonvoyage.DatabaseClient
 import paris.obsidian.bonvoyage.trips.Trip
+import paris.obsidian.bonvoyage.trips.Trips
 
 class DayDataSource (resources: Resources, ctx: Context, id: Int) {
 
     private var daysLiveData : MutableLiveData<List<Day>> = MutableLiveData()
     private val gctx = ctx
     private val currentTrip = id
+    private val initialDaysList = Days().getList(resources)
 
     /* Adds Day to liveData and posts value. */
     fun addDay(day: Day) {
-        val currentList = daysLiveData.value?.toMutableList()
+        val currentList = daysLiveData.value
         if (currentList == null) {
             daysLiveData.postValue(listOf(day))
         } else {
-            currentList.add(day)
-            currentList.size
-            daysLiveData.postValue(currentList)
+            val updatedList = currentList.toMutableList()
+            updatedList.add(day)
+            daysLiveData.postValue(updatedList)
         }
     }
 
@@ -41,7 +43,7 @@ class DayDataSource (resources: Resources, ctx: Context, id: Int) {
     }
 
     /* Returns Day given an ID. */
-    fun getDayForId(id: Int): Day? {
+    fun getDayForId(id: Long): Day? {
         daysLiveData.value?.let { days ->
             return@let days.firstOrNull{ it.id == id}
         }
@@ -58,20 +60,18 @@ class DayDataSource (resources: Resources, ctx: Context, id: Int) {
 
     fun getDayList(): LiveData<List<Day>> {
 
-        if (daysLiveData.value!!.size <= 1) {
-            CoroutineScope(Dispatchers.Main).launch {
-                withContext(Dispatchers.Default) {
-                    val db = DatabaseClient.getInstance(gctx)
+        CoroutineScope(Dispatchers.Main).launch {
+            withContext(Dispatchers.Default) {
+                val db = DatabaseClient.getInstance(gctx)
+                val dayDao : DayDao = db.dayDao()
+                val listOfDays = dayDao.getAll(currentTrip)
 
-                    val dayDao : DayDao = db.dayDao()
-                    val listOfDays = dayDao.getAll(currentTrip)
-                    if (listOfDays.isNotEmpty()) {
-                        val currentList = daysLiveData.value
-                        val updatedList = currentList?.toMutableList()
-                        updatedList?.size
-                        updatedList?.addAll(listOfDays)
-                        daysLiveData.postValue(updatedList)
-                    }
+                if (listOfDays.isNotEmpty()) {
+                    val list : MutableList<Day> = mutableListOf()
+                    daysLiveData.postValue(list)
+                    list.add(initialDaysList[0])
+                    list.addAll(listOfDays)
+                    daysLiveData.postValue(list)
                 }
             }
         }

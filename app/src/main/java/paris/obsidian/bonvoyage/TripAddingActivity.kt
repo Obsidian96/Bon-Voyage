@@ -9,10 +9,7 @@ import android.widget.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import jp.wasabeef.glide.transformations.BlurTransformation
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import paris.obsidian.bonvoyage.days.Days
 import paris.obsidian.bonvoyage.trips.Trip
 import paris.obsidian.bonvoyage.trips.TripDao
@@ -133,8 +130,9 @@ class TripAddingActivity : AppCompatActivity() {
                 day.tripID = trip.id
                 day.type = "default"
                 db.dayDao().insertOne(day).toInt()
-
-                super.onBackPressed()
+                withContext(Dispatchers.Main) {
+                    super.onBackPressed()
+                }
             }
         }
     }

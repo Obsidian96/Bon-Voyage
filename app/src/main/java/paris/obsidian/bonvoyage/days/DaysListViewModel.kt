@@ -1,40 +1,49 @@
 package paris.obsidian.bonvoyage.days
 
 
+
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import paris.obsidian.bonvoyage.R
-import paris.obsidian.bonvoyage.days.Day
-import paris.obsidian.bonvoyage.days.DayDataSource
-import paris.obsidian.bonvoyage.trips.Trip
+import paris.obsidian.bonvoyage.TripDetailActivity
 import java.util.*
 
 class DaysListViewModel(val dayDataSource: DayDataSource) : ViewModel() {
 
-    val daysLiveData = dayDataSource.getDayList()
+    val daysData = dayDataSource.getDayList()
 
     /* If the name and description are present, create new Day and add it to the datasource */
-    fun insertDay(dayID: Int = getDayCount(), number: Int = 0, date: String = Date().toString()) {
+    fun insertDay(day: Day?) {
 
-        val newId : Int = dayID + 1
+        val newId : Long = getDayCount() + 1L
+        val newDay : Day
 
-        val newDay = Day(newId,
-            "day",
-            "",
-            "",
-            0,
-            0
-        )
+        if (day != null) {
+            newDay = Day(newId,
+                "day",
+                day.content,
+                day.hotel,
+                day.dayNumber,
+                day.tripID
+            )
+        }
+        else {
+            newDay = Day(newId,
+                "day",
+                "",
+                "",
+                day?.dayNumber!!,
+                0
+            )
+        }
 
         dayDataSource.addDay(newDay)
     }
 
-    fun removeDay(day: Day? ) {
+    fun deleteDay(day: Day? ) {
         if (day == null) {
             return
         }
-
         dayDataSource.removeDay(day)
     }
 
@@ -53,12 +62,10 @@ class DaysListViewModel(val dayDataSource: DayDataSource) : ViewModel() {
         if (getDayCount() <= 1)
             return 1
 
-        var normalDayNumber = 0
-        daysLiveData.value?.forEach {
-            if (normalDayNumber != it.dayNumber)
-                return normalDayNumber + 1
-            //if (it.type == "day")
-            ++normalDayNumber
+        var normalDayNumber = 1
+        daysData.value?.forEach {
+            if (it.type == "day" && it.id != 0L)
+                ++normalDayNumber
         }
         return normalDayNumber
     }

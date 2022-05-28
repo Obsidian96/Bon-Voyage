@@ -1,14 +1,11 @@
 package paris.obsidian.bonvoyage
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -18,18 +15,22 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import paris.obsidian.bonvoyage.days.*
-import paris.obsidian.bonvoyage.trips.*
-import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import paris.obsidian.bonvoyage.days.Day
+import paris.obsidian.bonvoyage.days.DayAdapter
+import paris.obsidian.bonvoyage.days.DaysListViewModel
+import paris.obsidian.bonvoyage.days.DaysListViewModelFactory
+import paris.obsidian.bonvoyage.trips.Trip
+import paris.obsidian.bonvoyage.trips.TripDao
 import java.util.*
 
 class TripDetailActivity : AppCompatActivity() {
 
     lateinit var trip : Trip
     lateinit var recyclerView: RecyclerView
+    lateinit var dayAdapter: DayAdapter
+
     var initialized = 0;
+
 
     private val daysListViewModel by viewModels<DaysListViewModel> {
         DaysListViewModelFactory(this, intent.getIntExtra("id", 0))
@@ -68,7 +69,7 @@ class TripDetailActivity : AppCompatActivity() {
                     endDate.text = getString(R.string.trip_end, trip.dateEnd)
                 }
             }
-            val dayAdapter = DayAdapter(
+            dayAdapter = DayAdapter(
                 trip,
                 onTextEdited = { adapterOnEdit(it)},
                 onClick = {day -> adapterOnClick(day)},
@@ -77,11 +78,17 @@ class TripDetailActivity : AppCompatActivity() {
                     it.tripID = trip.id
                     it.dayNumber = daysListViewModel.getDayNumberForNewDay()
                     adapterAdd(it)
+
+                    Timer().schedule(object : TimerTask() {
+                        override fun run() {
+                            refresh()
+                        }
+                    }, 500)
                 })
 
             recyclerView.adapter = dayAdapter
 
-            daysListViewModel.daysLiveData.observe(owner) {
+            daysListViewModel.daysData.observe(owner) {
                 it?.let {
                     dayAdapter.submitList(it as MutableList<Day>)
                     recyclerView.post {
@@ -99,18 +106,13 @@ class TripDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun adapterOnClick(day: Day) {
+    private fun refresh() {
+        runOnUiThread {
+            recyclerView.scrollToPosition(daysListViewModel.getDayCount() - 1)
+        }
     }
 
-    private fun adapterAdd(day: Day) {
-        CoroutineScope(Dispatchers.Main).launch {
-            withContext(Dispatchers.Default) {
-                val db = DatabaseClient.getInstance(applicationContext)
-                day.id = db.dayDao().insertOne(day).toInt()
-                daysListViewModel.dayDataSource.addDay(day)
-            }
-        }
-
+    private fun adapterOnClick(day: Day) {
     }
 
     private fun adapterOnEdit(day: Day) {
@@ -122,15 +124,25 @@ class TripDetailActivity : AppCompatActivity() {
         }
     }
 
+    private fun adapterAdd(day: Day) {
+        CoroutineScope(Dispatchers.Main).launch {
+            withContext(Dispatchers.Default) {
+                val db = DatabaseClient.getInstance(applicationContext)
+                db.dayDao().insertOne(day)
+            }
+        }
+        daysListViewModel.insertDay(day)
+    }
+
     private fun adapterRemove(day: Day) {
-        if (day.id != 0) {
+        if (day.id != 0L) {
             CoroutineScope(Dispatchers.Main).launch {
                 withContext(Dispatchers.Default) {
                     val db = DatabaseClient.getInstance(applicationContext)
                     db.dayDao().removeOne(day)
                 }
             }
-            daysListViewModel.removeDay(day)
+            daysListViewModel.deleteDay(day)
         }
     }
 }

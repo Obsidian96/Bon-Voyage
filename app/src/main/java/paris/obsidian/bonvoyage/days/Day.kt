@@ -7,7 +7,7 @@ import java.util.*
 
 @Entity
 data class Day (
-    @PrimaryKey(autoGenerate = true) var id: Int = 0,
+    @PrimaryKey(autoGenerate = true) var id: Long = 0,
     @ColumnInfo (name = "type")  var type: String = "", //Values: Trip(transportation)/Day/...
     @ColumnInfo (name = "content")  var content: String = "", //What's in the day
     @ColumnInfo (name = "hotel")  var hotel: String = "", //Where to sleep (Lat/Lon)

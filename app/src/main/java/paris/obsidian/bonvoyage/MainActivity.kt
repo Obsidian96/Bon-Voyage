@@ -6,36 +6,39 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import paris.obsidian.bonvoyage.days.Day
-import paris.obsidian.bonvoyage.days.DayDao
 import paris.obsidian.bonvoyage.trips.*
-import java.util.*
 
 class MainActivity: AppCompatActivity() {
 
+
     private val tripsListViewModel by viewModels<TripsListViewModel> {
         TripsListViewModelFactory(this)
+    }
+
+    lateinit var tripAdapter : TripAdapter
+
+    override fun onResume() {
+        super.onResume()
+
+        tripsListViewModel.refresh()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val tripAdapter = TripAdapter(onClick = {trip -> adapterOnClick(trip)},
+        tripAdapter = TripAdapter(onClick = {trip -> adapterOnClick(trip)},
             onRemoveClick = {trip -> adapterRemove(trip)})
 
         val recyclerView: RecyclerView = findViewById(R.id.countryRecycler)
         recyclerView.adapter = tripAdapter
         recyclerView.layoutManager = GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false)
 
-        tripsListViewModel.tripsLiveData.observe(this) {
+       tripsListViewModel.tripsLiveData.observe(this) {
             it?.let {
                 tripAdapter.submitList(it as MutableList<Trip>)
             }

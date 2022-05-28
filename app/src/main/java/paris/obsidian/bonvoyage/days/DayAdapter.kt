@@ -10,18 +10,14 @@ import android.widget.*
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.textfield.TextInputEditText
 import paris.obsidian.bonvoyage.R
-import paris.obsidian.bonvoyage.days.Day
 import paris.obsidian.bonvoyage.trips.Trip
 import java.text.SimpleDateFormat
 import java.util.*
-import android.widget.Toast
 
 import android.view.inputmethod.EditorInfo
 
 import android.widget.TextView
-import android.widget.TextView.OnEditorActionListener
 
 
 class DayAdapter(
@@ -108,7 +104,7 @@ class DayAdapter(
         fun bind(day: Day) {
             val ctx = backgroundImage.context
 
-            if (day.id == 0 || day.type == "default") {
+            if (day.id == 0L || day.type == "default") {
                 plusButtonContainer.visibility = View.VISIBLE
                 contentContainer.visibility = View.GONE
                 dayNumber.alpha = 0F

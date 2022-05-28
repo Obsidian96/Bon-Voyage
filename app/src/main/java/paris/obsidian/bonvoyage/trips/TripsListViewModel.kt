@@ -9,7 +9,7 @@ import java.util.*
 
 class TripsListViewModel(val tripDataSource: TripDataSource) : ViewModel() {
 
-    val tripsLiveData = tripDataSource.getTripList()
+    var tripsLiveData = tripDataSource.getTripList(false)
 
     /* If the name and description are present, create new Trip and add it to the datasource */
     fun insertTrip(tripID: Int = getTripCount(), tripName: String?, date: String = Date().toString()) {
@@ -27,6 +27,10 @@ class TripsListViewModel(val tripDataSource: TripDataSource) : ViewModel() {
         )
 
         tripDataSource.addTrip(newTrip)
+    }
+
+    fun refresh() {
+        tripsLiveData = tripDataSource.getTripList(true)
     }
 
     fun removeTrip(trip: Trip? ) {
