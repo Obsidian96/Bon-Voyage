@@ -1,9 +1,6 @@
 package paris.obsidian.bonvoyage.days
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface DayDao {
@@ -18,6 +15,9 @@ interface DayDao {
 
     @Insert
     fun insertOne(day: Day): Long
+
+    @Update
+    fun updateOne(day: Day)
 
     @Delete
     fun removeOne(day: Day)

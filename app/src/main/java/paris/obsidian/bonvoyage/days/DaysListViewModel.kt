@@ -38,6 +38,12 @@ class DaysListViewModel(val dayDataSource: DayDataSource) : ViewModel() {
         dayDataSource.removeDay(day)
     }
 
+    fun updateDay(day: Day? ) {
+        if (day == null) {
+            return
+        }
+    }
+
     fun getDayCount() : Int{
         return dayDataSource.getDayCount()
     }
@@ -51,7 +57,8 @@ class DaysListViewModel(val dayDataSource: DayDataSource) : ViewModel() {
         daysLiveData.value?.forEach {
             if (normalDayNumber != it.dayNumber)
                 return normalDayNumber + 1
-            ++normalDayNumber
+            //if (it.type == "day")
+                ++normalDayNumber
         }
         return normalDayNumber
     }

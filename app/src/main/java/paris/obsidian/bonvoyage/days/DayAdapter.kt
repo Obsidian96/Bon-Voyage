@@ -26,6 +26,7 @@ import android.widget.TextView.OnEditorActionListener
 
 class DayAdapter(
     private val trip: Trip,
+    private val onTextEdited: (Day) -> Unit,
     private val onClick: (Day) -> Unit,
     private val onRemoveClick: (Day) -> Unit,
     private val onAddClick: (Day) -> Unit)
@@ -33,6 +34,7 @@ class DayAdapter(
 
     class DayViewHolder(view: View,
                         val trip: Trip,
+                        val onTextEdited: (Day) -> Unit,
                         val onClick: (Day) -> Unit,
                         val onRemoveClick: (Day) -> Unit,
                         val onAddClick: (Day) -> Unit) : RecyclerView.ViewHolder(view) {
@@ -85,6 +87,21 @@ class DayAdapter(
                         it3 -> onAddClick(it3)
                 }
             }
+
+            dayDescription.addTextChangedListener(object : TextWatcher {
+
+                override fun afterTextChanged(s: Editable) {
+                    currentDay?.let {
+                        onTextEdited(it)
+                    }
+                }
+
+                override fun beforeTextChanged(s: CharSequence, start: Int,
+                                               count: Int, after: Int) {}
+
+                override fun onTextChanged(s: CharSequence, start: Int,
+                                           before: Int, count: Int) {}
+            })
         }
 
         /* Bind Day name and image. */
@@ -112,19 +129,29 @@ class DayAdapter(
                     backgroundImage.setBackgroundColor(ctx.resources.getColor(R.color.teal_200))
                 }
 
-                val dateFormat = "dd.MM.yyyy"
-                val sdf = SimpleDateFormat(dateFormat, Locale.FRANCE)
-                val date = sdf.parse(trip.dateBegin)
-                val tomorrow : Date
-                if (date != null) {
-                    val dateFormat2 = "E dd MM"
-                    val sdf2 = SimpleDateFormat(dateFormat2, Locale.getDefault())
+                if (day.type == "day") {
+                    val dateFormat = "dd.MM.yyyy"
+                    val sdf = SimpleDateFormat(dateFormat, Locale.FRANCE)
+                    val date = sdf.parse(trip.dateBegin)
 
-                    tomorrow = Date(date.time + 1000 * 60 * 60 * 24)
-                    dayNumber.text = ctx.getString(R.string.day_number, day.dayNumber, sdf2.format(tomorrow))
+                    val nextDay : Date
+
+                    if (date != null) {
+                        val dateFormat2 = "E dd/MM"
+                        val sdf2 = SimpleDateFormat(dateFormat2, Locale.getDefault())
+                        nextDay = Date(date.time + ((1000 * 60 * 60 * 24) * (day.dayNumber - 1)))
+                        dayNumber.text = ctx.getString(R.string.day_number, day.dayNumber, sdf2.format(nextDay))
+                    }
+                    else {
+                        dayNumber.text = ctx.getString(R.string.day_number_short, day.dayNumber)
+                    }
+                    hotelLoc.visibility = View.VISIBLE
+                    dayDescription.hint = ctx.getString(R.string.add_day_description)
                 }
                 else {
-                    dayNumber.text = ctx.getString(R.string.day_number_short, day.dayNumber)
+                    dayNumber.text = ctx.getString(R.string.day_travel)
+                    hotelLoc.visibility = View.GONE
+                    dayDescription.hint = ctx.getString(R.string.add_transport_description)
                 }
 
                 dayDescription.setText(day.content)
@@ -178,7 +205,7 @@ class DayAdapter(
         val width =  Resources.getSystem().displayMetrics.widthPixels
         view.layoutParams.width = (width * 0.9).toInt()
         view.layoutParams.height = view.layoutParams.height
-        return DayViewHolder(view, trip, onClick, onRemoveClick, onAddClick)
+        return DayViewHolder(view, trip, onTextEdited, onClick, onRemoveClick, onAddClick)
     }
 
     // Gets current Day and uses it to bind view.

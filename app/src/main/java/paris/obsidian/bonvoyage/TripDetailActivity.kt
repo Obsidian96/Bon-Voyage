@@ -68,6 +68,7 @@ class TripDetailActivity : AppCompatActivity() {
             }
             val dayAdapter = DayAdapter(
                 trip,
+                onTextEdited = { adapterOnEdit(it)},
                 onClick = {day -> adapterOnClick(day)},
                 onRemoveClick = {day -> adapterRemove(day)},
                 onAddClick = {
@@ -75,6 +76,7 @@ class TripDetailActivity : AppCompatActivity() {
                     it.dayNumber = daysListViewModel.getDayNumberForNewDay()
                     adapterAdd(it)
                 })
+
             recyclerView.adapter = dayAdapter
 
             daysListViewModel.daysLiveData.observe(owner) {
@@ -104,6 +106,16 @@ class TripDetailActivity : AppCompatActivity() {
                 val db = DatabaseClient.getInstance(applicationContext)
                 day.id = db.dayDao().insertOne(day).toInt()
                 daysListViewModel.dayDataSource.addDay(day)
+            }
+        }
+
+    }
+
+    private fun adapterOnEdit(day: Day) {
+        CoroutineScope(Dispatchers.Main).launch {
+            withContext(Dispatchers.Default) {
+                val db = DatabaseClient.getInstance(applicationContext)
+                db.dayDao().updateOne(day)
             }
         }
     }
