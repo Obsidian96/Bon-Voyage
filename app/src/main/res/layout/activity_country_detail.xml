@@ -26,48 +26,58 @@
         android:text="@string/trip_to"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_centerHorizontal="true"
-        android:textSize="24sp"
         android:textColor="@color/white"
         android:shadowColor="@color/black"
-        android:shadowDx="1"
-        android:shadowDy="2"
-        android:shadowRadius="2"/>
+        android:shadowDx="-1"
+        android:shadowDy="-2"
+        android:shadowRadius="15"
+        android:textSize="@dimen/size_large"
+        android:background="@color/black_low_opacity"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"/>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
+        android:background="@color/black_low_opacity"
         android:layout_below="@id/tripName"
-        android:id="@+id/dateContainer"
-        android:layout_marginTop="16dp">
+        android:layout_marginTop="16dp"
+        android:id="@+id/dateContainer">
 
-        <TextView
-            android:id="@+id/beginDate"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
-            android:text="@string/trip_start"
-            app:layout_constraintTop_toTopOf="parent"
-            android:textSize="18sp"
-            android:textColor="@color/white"
-            android:shadowColor="@color/black"
-            android:shadowDx="1"
-            android:shadowDy="2"
-            android:shadowRadius="2"/>
+            android:layout_centerHorizontal="true">
 
-        <TextView
-            android:id="@+id/endDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/trip_end"
-            app:layout_constraintTop_toTopOf="parent"
-            android:textSize="18sp"
-            android:textColor="@color/white"
-            android:shadowColor="@color/black"
-            android:shadowDx="1"
-            android:shadowDy="2"
-            android:shadowRadius="2"/>
-    </LinearLayout>
+            <TextView
+                android:id="@+id/beginDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:text="@string/trip_start"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textSize="@dimen/size_normal"
+                android:textColor="@color/white"
+                android:shadowColor="@color/black"
+                android:shadowDx="1"
+                android:shadowDy="2"
+                android:shadowRadius="2"/>
+
+            <TextView
+                android:id="@+id/endDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/trip_end"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textSize="@dimen/size_normal"
+                android:textColor="@color/white"
+                android:shadowColor="@color/black"
+                android:shadowDx="1"
+                android:shadowDy="2"
+                android:shadowRadius="2"/>
+        </LinearLayout>
+
+    </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tripDaysContainer"

@@ -3,10 +3,14 @@ package paris.obsidian.bonvoyage
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -48,11 +52,7 @@ class MainActivity: AppCompatActivity() {
 
         Log.v(TAG, "Main activity loaded");
 
-        /* val backgroundImage: ImageView = findViewById(R.id.imageViewBackground)
-         Glide.with(this).load(R.drawable.airplane)
-             .apply(RequestOptions.bitmapTransform(BlurTransformation(1, 2)))
-             .into(backgroundImage)
-        */
+        window.setBackgroundDrawableResource(R.drawable.main_background)
     }
 
     private fun adapterOnClick(trip: Trip) {

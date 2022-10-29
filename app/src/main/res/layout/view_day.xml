@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        app:cardBackgroundColor="@color/black_low_opacity"
+        app:cardBackgroundColor="@color/white_low_opacity"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -60,7 +60,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/add_day_of_trip"
                     android:layout_gravity="center"
-                    android:layout_marginTop="0dp">
+                    android:layout_marginTop="0dp"
+                    android:textSize="@dimen/size_large">
                 </TextView>
 
                 <ImageView
@@ -81,7 +82,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/add_transportation"
-                    android:layout_gravity="center">
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/size_large">
                 </TextView>
 
                 <ImageView
@@ -115,14 +117,16 @@
                     android:gravity="top"
                     android:singleLine="false"
                     android:layout_weight="1"
+                    android:textSize="@dimen/size_normal"
                     />
 
                 <Button
                     android:id="@+id/hotelLoc"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="50dp"
                     android:text="@string/hotel_loc"
                     android:alpha="1"
+                    android:textSize="@dimen/size_small"
                     />
             </LinearLayout>
 

@@ -14,7 +14,7 @@
         <activity android:name=".TripDetailActivity"
             android:windowSoftInputMode="stateHidden|adjustPan">
         </activity>
-        <activity android:name=".TripAddingActivity"></activity>
+        <activity android:name=".TripAddingActivity" />
         <activity android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
