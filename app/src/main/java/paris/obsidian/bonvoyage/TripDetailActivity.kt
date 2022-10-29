@@ -1,6 +1,7 @@
 package paris.obsidian.bonvoyage
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -30,7 +31,7 @@ class TripDetailActivity : AppCompatActivity() {
     lateinit var dayAdapter: DayAdapter
 
     var initialized = 0;
-
+    private val TAG = "TripDetailActivity"
 
     private val daysListViewModel by viewModels<DaysListViewModel> {
         DaysListViewModelFactory(this, intent.getIntExtra("id", 0))
@@ -49,6 +50,9 @@ class TripDetailActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.tripDaysContainer)
 
         recyclerView.layoutManager = GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false)
+
+        //Empty for loading
+        recyclerView.adapter = DayAdapter(Trip(), onTextEdited = {},  onClick = {}, onRemoveClick = {}, onAddClick = {})
 
         val owner = this
 
@@ -132,6 +136,8 @@ class TripDetailActivity : AppCompatActivity() {
             }
         }
         daysListViewModel.insertDay(day)
+        dayAdapter.notifyItemInserted(day.dayNumber)
+        dayAdapter.notifyItemRangeChanged(day.dayNumber, dayAdapter.itemCount - day.dayNumber);
     }
 
     private fun adapterRemove(day: Day) {
@@ -143,6 +149,8 @@ class TripDetailActivity : AppCompatActivity() {
                 }
             }
             daysListViewModel.deleteDay(day)
+            dayAdapter.notifyItemRemoved(day.dayNumber)
+            dayAdapter.notifyItemRangeChanged(day.dayNumber, dayAdapter.itemCount - day.dayNumber);
         }
     }
 }

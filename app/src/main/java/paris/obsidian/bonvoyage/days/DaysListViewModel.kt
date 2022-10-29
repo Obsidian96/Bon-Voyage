@@ -20,7 +20,7 @@ class DaysListViewModel(val dayDataSource: DayDataSource) : ViewModel() {
 
         if (day != null) {
             newDay = Day(newId,
-                "day",
+                day.type,
                 day.content,
                 day.hotel,
                 day.dayNumber,
