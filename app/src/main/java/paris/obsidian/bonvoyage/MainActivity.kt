@@ -2,6 +2,7 @@ package paris.obsidian.bonvoyage
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -12,8 +13,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import paris.obsidian.bonvoyage.trips.*
 
-class MainActivity: AppCompatActivity() {
+private const val TAG = "MainActivity"
 
+class MainActivity: AppCompatActivity() {
 
     private val tripsListViewModel by viewModels<TripsListViewModel> {
         TripsListViewModelFactory(this)
@@ -44,19 +46,23 @@ class MainActivity: AppCompatActivity() {
             }
         }
 
+        Log.v(TAG, "Main activity loaded");
+
         /* val backgroundImage: ImageView = findViewById(R.id.imageViewBackground)
          Glide.with(this).load(R.drawable.airplane)
              .apply(RequestOptions.bitmapTransform(BlurTransformation(1, 2)))
-             .into(backgroundImage)*/
-
+             .into(backgroundImage)
+        */
     }
 
     private fun adapterOnClick(trip: Trip) {
         if (trip.id == 0) {
+            Log.v(TAG, "Starting new trip form");
             val intent = Intent(this, TripAddingActivity()::class.java)
             startActivity(intent)
         }
         else {
+            Log.v(TAG, "Going to trip: ${trip.name} (id: ${trip.id})");
             val intent = Intent(this, TripDetailActivity()::class.java)
             intent.putExtra("id", trip.id)
             startActivity(intent)
@@ -74,6 +80,7 @@ class MainActivity: AppCompatActivity() {
                 }
             }
             tripsListViewModel.removeTrip(trip)
+            Log.v(TAG, "Trip removed: ${trip.name} (id: ${trip.id})");
         }
     }
 }

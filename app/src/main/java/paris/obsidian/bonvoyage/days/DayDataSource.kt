@@ -3,6 +3,7 @@ package paris.obsidian.bonvoyage.days
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineScope
@@ -10,8 +11,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import paris.obsidian.bonvoyage.DatabaseClient
-import paris.obsidian.bonvoyage.trips.Trip
-import paris.obsidian.bonvoyage.trips.Trips
+
+private const val TAG = "DayDataSource"
 
 class DayDataSource (resources: Resources, ctx: Context, id: Int) {
 
@@ -29,6 +30,7 @@ class DayDataSource (resources: Resources, ctx: Context, id: Int) {
             val updatedList = currentList.toMutableList()
             updatedList.add(day)
             daysLiveData.postValue(updatedList)
+            Log.v(TAG, "Day added to Datasource");
         }
     }
 
@@ -39,6 +41,7 @@ class DayDataSource (resources: Resources, ctx: Context, id: Int) {
             val updatedList = currentList.toMutableList()
             updatedList.remove(day)
             daysLiveData.postValue(updatedList)
+            Log.v(TAG, "Day removed from Datasource");
         }
     }
 
@@ -72,6 +75,7 @@ class DayDataSource (resources: Resources, ctx: Context, id: Int) {
                     list.add(initialDaysList[0])
                     list.addAll(listOfDays)
                     daysLiveData.postValue(list)
+                    Log.v(TAG, "List of days retrieved");
                 }
             }
         }

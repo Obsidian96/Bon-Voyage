@@ -24,6 +24,8 @@ import paris.obsidian.bonvoyage.trips.Trip
 import paris.obsidian.bonvoyage.trips.TripDao
 import java.util.*
 
+private const val TAG = "TripDetailActivity"
+
 class TripDetailActivity : AppCompatActivity() {
 
     lateinit var trip : Trip
@@ -31,7 +33,6 @@ class TripDetailActivity : AppCompatActivity() {
     lateinit var dayAdapter: DayAdapter
 
     var initialized = 0;
-    private val TAG = "TripDetailActivity"
 
     private val daysListViewModel by viewModels<DaysListViewModel> {
         DaysListViewModelFactory(this, intent.getIntExtra("id", 0))
@@ -103,6 +104,8 @@ class TripDetailActivity : AppCompatActivity() {
                     }
                 }
             }
+
+            Log.v(TAG, "Initialization finished");
         }
 
         closeButton.setOnClickListener {
@@ -138,6 +141,7 @@ class TripDetailActivity : AppCompatActivity() {
         daysListViewModel.insertDay(day)
         dayAdapter.notifyItemInserted(day.dayNumber)
         dayAdapter.notifyItemRangeChanged(day.dayNumber, dayAdapter.itemCount - day.dayNumber);
+        Log.v(TAG, "Item added: " + day.type + " number" + day.dayNumber + " (id: " + day.id + ")");
     }
 
     private fun adapterRemove(day: Day) {
@@ -151,6 +155,7 @@ class TripDetailActivity : AppCompatActivity() {
             daysListViewModel.deleteDay(day)
             dayAdapter.notifyItemRemoved(day.dayNumber)
             dayAdapter.notifyItemRangeChanged(day.dayNumber, dayAdapter.itemCount - day.dayNumber);
+            Log.v(TAG, "Item removed: " + day.type + " number" + day.dayNumber + " (id: " + day.id + ")");
         }
     }
 }

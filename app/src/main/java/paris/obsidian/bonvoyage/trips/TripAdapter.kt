@@ -1,6 +1,7 @@
 package paris.obsidian.bonvoyage.trips
 
 import android.content.res.Resources
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import com.bumptech.glide.request.RequestOptions
 import jp.wasabeef.glide.transformations.BlurTransformation
 import paris.obsidian.bonvoyage.R
 
+private const val TAG = "Trip Adapter"
 
 class TripAdapter(private val onClick: (Trip) -> Unit, private val onRemoveClick: (Trip) -> Unit) :
     ListAdapter<Trip, TripAdapter.TripViewHolder>(TripDiffCallback) {
@@ -74,6 +76,8 @@ class TripAdapter(private val onClick: (Trip) -> Unit, private val onRemoveClick
 
             currentTrip = trip
             countryName.text = trip.name
+
+            Log.v(TAG, "Adapter finished loading");
         }
     }
 

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
 import android.app.DatePickerDialog
+import android.util.Log
 import android.view.View
 import android.widget.*
 import com.bumptech.glide.Glide
@@ -15,6 +16,8 @@ import paris.obsidian.bonvoyage.trips.Trip
 import paris.obsidian.bonvoyage.trips.TripDao
 import java.text.SimpleDateFormat
 import java.util.*
+
+private const val TAG = "TripAddingActivity"
 
 class TripAddingActivity : AppCompatActivity() {
 
@@ -99,6 +102,8 @@ class TripAddingActivity : AppCompatActivity() {
                 cal.get(Calendar.MONTH),
                 cal.get(Calendar.DAY_OF_MONTH)).show()
         }
+
+        Log.v(TAG, "Initialization finished");
     }
 
     fun validateNewTrip(position: Int = 0) {
@@ -130,6 +135,8 @@ class TripAddingActivity : AppCompatActivity() {
                 day.tripID = trip.id
                 day.type = "default"
                 db.dayDao().insertOne(day).toInt()
+
+                Log.v(TAG, "Trip added (" + trip.name + " (with id: "+ trip.id +")); Returning to MainActivity");
                 withContext(Dispatchers.Main) {
                     super.onBackPressed()
                 }
@@ -149,5 +156,7 @@ class TripAddingActivity : AppCompatActivity() {
         Glide.with(this).load(resID)
             .apply(RequestOptions.bitmapTransform(BlurTransformation(5, 2)))
             .into(imagePreview)
+
+        Log.v(TAG, "New image (${resID}) loaded");
     }
 }

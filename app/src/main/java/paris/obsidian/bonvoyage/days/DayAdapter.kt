@@ -3,6 +3,7 @@ package paris.obsidian.bonvoyage.days
 import android.content.res.Resources
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import android.view.inputmethod.EditorInfo
 
 import android.widget.TextView
 
+private const val TAG = "DayAdapter"
 
 class DayAdapter(
     private val trip: Trip,
@@ -189,6 +191,7 @@ class DayAdapter(
             }
 
             currentDay = day
+            Log.v(TAG, "Adapter finished loading");
         }
     }
 
